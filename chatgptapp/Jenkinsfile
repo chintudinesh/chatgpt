@@ -5,14 +5,15 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-github-username/my-app.git'
+                git 'https://github.com/dineshsiripurapu/chatgpt.git'
+                
             }
         }
         
         stage('Build') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.example.com', 'docker-credentials-id') {
+                    docker.withRegistry('https://registry.example.com', 'dckr_pat_gqAbQzWrdlgRmo8oH5TybcIwEgg') {
                         def customImageTag = "my-docker-image:${env.BUILD_NUMBER}"
                         docker.build(customImageTag, '.')
                     }
