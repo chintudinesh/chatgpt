@@ -1,0 +1,34 @@
+// Jenkinsfile
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/your-github-username/my-app.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.example.com', 'docker-credentials-id') {
+                        def customImageTag = "my-docker-image:${env.BUILD_NUMBER}"
+                        docker.build(customImageTag, '.')
+                    }
+                }
+            }
+        }
+        
+        stage('Push') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.example.com', 'docker-credentials-id') {
+                        def customImageTag = "my-docker-image:${env.BUILD_NUMBER}"
+                        docker.image(customImageTag).push()
+                    }
+                }
+            }
+        }
+    }
+}
